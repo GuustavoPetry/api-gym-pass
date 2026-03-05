@@ -1,0 +1,8 @@
+- iniciar serviço Prisma -> npx prisma --init
+
+- gerar tipagem das models de schema.prisma -> npx prisma generate
+
+- rodar migrations -> npx prisma migrate dev
+
+- abrir client prisma studio -> npx prisma studio
+

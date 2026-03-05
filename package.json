@@ -22,11 +22,14 @@
   "homepage": "https://github.com/guustavopetry/api-gym-pass#readme",
   "devDependencies": {
     "@types/node": "25.3.3",
+    "eslint": "10.0.2",
+    "prisma": "7.4.2",
     "tsup": "8.5.1",
     "tsx": "4.21.0",
     "typescript": "5.9.3"
   },
   "dependencies": {
+    "@prisma/client": "7.4.2",
     "dotenv": "17.3.1",
     "fastify": "5.7.4",
     "zod": "4.3.6"
