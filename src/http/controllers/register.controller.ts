@@ -31,7 +31,7 @@ export async function registerController(request: FastifyRequest, reply: Fastify
             });
         }
 
-        return reply.status(500).send() // TODO: fix me
+        throw err;
     }
 
     return reply.status(201).send();
