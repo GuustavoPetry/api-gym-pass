@@ -1,28 +1,30 @@
+import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import { expect, describe, it } from "vitest";
 import { RegisterService } from "./register.service";
 import { compare } from "bcryptjs";
+import { UserAlreadyExistsError } from "./errors/user-already-exists-error";
 
 /**
 Testes unitários não tem contato com depêndencias externas 
 */
 
 describe("Register Service", () => {
-    it("should hash user password upon registration", async () => {
-        const registerService = new RegisterService({
-            async findByEmail(email) {
-                return null
-            },
+    it("should be able to register", async () => {
+        const usersRepository = new InMemoryUsersRepository();
+        const registerService = new RegisterService(usersRepository);
 
-            async create(data) {
-                return {
-                    id: "user-1",
-                    name: data.name,
-                    email: data.email,
-                    password_hash: data.password_hash,
-                    created_at: new Date()
-                }
-            }
+        const { user } = await registerService.execute({
+            name: "Gustavo Petry",
+            email: "gustavo@gmail.com",
+            password: "123456"
         });
+
+        expect(user.id).toEqual(expect.any(String));
+    });
+
+    it("should hash user password upon registration", async () => {
+        const usersRepository = new InMemoryUsersRepository();
+        const registerService = new RegisterService(usersRepository);
 
         const { user } = await registerService.execute({
             name: "Gustavo Petry",
@@ -36,5 +38,26 @@ describe("Register Service", () => {
         );
 
         expect(isPasswordCorrectlyHashed).toBe(true);
+    })
+
+    it("should not be able to register with same email twice", async () => {
+        const usersRepository = new InMemoryUsersRepository();
+        const registerService = new RegisterService(usersRepository);
+
+        const email = "gustavo@gmail.com";
+
+        await registerService.execute({
+            name: "Gustavo Petry",
+            email,
+            password: "123456"
+        });
+
+        expect(() =>
+            registerService.execute({
+                name: "Gustavo Petry",
+                email,
+                password: "123456"
+            }),
+        ).rejects.toBeInstanceOf(UserAlreadyExistsError);
     });
 });
