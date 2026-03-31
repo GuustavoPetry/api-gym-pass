@@ -1,5 +1,5 @@
 import fastify from "fastify";
-import { userRoutes } from "./http/routes/user.routes";
+import { userRoutes } from "./http/routes";
 import { z, ZodError } from "zod";
 import { env } from "./env";
 
