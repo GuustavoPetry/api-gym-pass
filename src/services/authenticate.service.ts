@@ -1,4 +1,4 @@
-import { usersRepository } from "@/repositories/users.repository";
+import { UsersRepository } from "@/repositories/users.repository";
 import { InvalidCredentialsError } from "./errors/invalid-credentials-error";
 import { compare } from "bcryptjs";
 import { User } from "@prisma/client";
@@ -14,7 +14,7 @@ interface AuthenticateServiceResponse {
 
 export class AuthenticateService {
     constructor(
-        private usersRepository: usersRepository
+        private usersRepository: UsersRepository
     ) {}
 
     async execute({ 
