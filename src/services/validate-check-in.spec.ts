@@ -34,7 +34,7 @@ describe("Validade Check-in Service", () => {
     });
 
     it("should not be able to validated an inexistent check-in", async () => {
-        expect(() =>
+        await expect(() =>
             sut.execute({
                 checkInId: "inexistent-checkin-id"
             })
@@ -52,7 +52,7 @@ describe("Validade Check-in Service", () => {
         const twentyOneMinutesInMs = 1000 * 60 * 21
         vi.advanceTimersByTime(twentyOneMinutesInMs);
 
-        expect(() =>
+        await expect(() =>
             sut.execute({
                 checkInId: createdCheckIn.id
             })
