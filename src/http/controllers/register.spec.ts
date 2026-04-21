@@ -1,10 +1,10 @@
 import request from "supertest";
 import { app } from "@/app";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeEach, describe, expect, it } from "vitest";
 import { prisma } from "@/lib/prisma";
 
 describe("Register (e2e)", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await prisma.$executeRawUnsafe(`TRUNCATE TABLE "users" CASCADE`);
         await app.ready();
     });
@@ -14,11 +14,13 @@ describe("Register (e2e)", () => {
     });
 
     it("should be able to register", async () => {
+        const email = `${crypto.randomUUID()}@gmail.com`
+
         const response = await request(app.server)
             .post("/users")
             .send({
                 name: "Gustavo Petry",
-                email: "gustavo@gmail.com",
+                email,
                 password: "123456"
             });
 

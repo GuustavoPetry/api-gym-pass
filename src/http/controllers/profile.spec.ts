@@ -14,14 +14,16 @@ describe("Profile (e2e)", () => {
     });
 
     it("should be able to get user profile", async () => {
+        const email = `${crypto.randomUUID()}@gmail.com`
+
         await request(app.server).post("/users").send({
             name: "Gustavo Petry",
-            email: "gustavo.dev1@gmail.com",
+            email,
             password: "123456"
         });
 
         const authResponse = await request(app.server).post("/sessions").send({
-            email: "gustavo.dev1@gmail.com",
+            email,
             password: "123456"
         });
 
@@ -36,7 +38,7 @@ describe("Profile (e2e)", () => {
         expect(profileResponse.body.user).toEqual(
             expect.objectContaining(
                 {
-                    email: "gustavo.dev1@gmail.com"
+                    email,
                 }
             ));
     });
