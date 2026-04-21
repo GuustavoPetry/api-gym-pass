@@ -4,8 +4,6 @@ import { FastifyReply, FastifyRequest } from "fastify";
 export async function profileController(request: FastifyRequest, reply: FastifyReply) {
     const getUserProfile = makeGetUserProfileService();
 
-    console.log("SUB:", request.user.sub);
-
     const { user } = await getUserProfile.execute({
         userId: request.user.sub,
     });

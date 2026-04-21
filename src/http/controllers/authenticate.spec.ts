@@ -1,9 +1,11 @@
 import request from "supertest";
 import { app } from "@/app";
 import { beforeEach, describe, expect, it, afterAll } from "vitest";
+import { prisma } from "@/lib/prisma";
 
 describe("Authenticate (e2e)", () => {
     beforeEach(async () => {
+        await prisma.$executeRawUnsafe(`TRUNCATE TABLE "users" CASCADE`);
         await app.ready();
     });
 

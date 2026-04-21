@@ -1,43 +1,16 @@
-import { prisma } from "@/lib/prisma";
+import { env } from "@/env";
+import { config } from "dotenv";
 import { execSync } from "node:child_process";
-import { randomUUID } from "node:crypto";
 import type { Environment } from "vitest/environments";
 
-function generateDatabaseUrl(schema: string) {
-    if (!process.env.DATABASE_URL) {
-        throw new Error("Please provide a DATABASE_URL env variable");
-    }
-
-    const url = new URL(process.env.DATABASE_URL);
-
-    url.searchParams.set("schema", schema);
-
-    return url.toString();
-}
+config({ path: ".env.test" });
 
 export default <Environment>{
     name: "prisma",
     viteEnvironment: "ssr",
     async setup() {
-        // aplica migrations no banco de teste
-        const schema = randomUUID();
-        const databaseUrl = generateDatabaseUrl(schema);
-
-        console.log(databaseUrl);
-
-        process.env.DATABASE_URL = databaseUrl;
-
-        execSync("npx prisma migrate deploy");
-
         return {
-            async teardown() {
-                // limpa todas as tabelas após cada arquivo de teste
-                await prisma.$executeRawUnsafe(
-                    `DROP SCHEMA IF EXISTS "${schema}" CASCADE`
-                );
-
-                await prisma.$disconnect();
-            },
+            async teardown() { },
         };
     },
 };
