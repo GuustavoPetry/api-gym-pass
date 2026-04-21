@@ -5,7 +5,7 @@ import { profileController } from "./controllers/profile.controller";
 import { verifyJWT } from "./middlewares/verify-jwt";
 
 export async function userRoutes(app: FastifyInstance) {
-    app.post("/user", registerController);
+    app.post("/users", registerController);
     app.post("/sessions", authenticateController);
 
     /** Authenticated */
