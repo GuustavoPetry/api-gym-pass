@@ -2,7 +2,6 @@ import { Prisma, CheckIn } from "@prisma/client";
 import { CheckInsRepository } from "../check-ins-repository";
 import { prisma } from "@/lib/prisma";
 import dayjs from "dayjs";
-import { check } from "zod";
 
 export class PrismaCheckInsRepository implements CheckInsRepository {
     async create(data: Prisma.CheckInUncheckedCreateInput) {
