@@ -15,12 +15,12 @@ export async function createGymController(request: FastifyRequest, reply: Fastif
         }),
     });
 
-    const { title, description, phone, latitude, longitude } = 
+    const { title, description, phone, latitude, longitude } =
         createGymBodySchema.parse(request.body);
 
     const createGymService = makeCreateGymService();
 
-    await createGymService.execute({
+    const { gym } = await createGymService.execute({
         title,
         description,
         phone,
@@ -28,5 +28,9 @@ export async function createGymController(request: FastifyRequest, reply: Fastif
         longitude
     });
 
-    return reply.status(201).send();
+    return reply.status(201).send({
+        ...gym,
+        latitude: Number(gym.latitude),
+        longitude: Number(gym.longitude)
+    });
 }
