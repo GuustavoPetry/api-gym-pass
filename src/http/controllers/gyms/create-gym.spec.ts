@@ -1,14 +1,17 @@
 import { app } from "@/app";
 import { prisma } from "@/lib/prisma";
 import { createAndAuthenticateUser } from "@/utils/tests/create-and-authenticate-user";
-import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "vitest";
 import request from "supertest";
 
 describe("Create Gym (e2e)", () => {
-    beforeAll(async () => {
+    beforeEach(async () => {
         await prisma.$executeRawUnsafe(`TRUNCATE TABLE "gyms" CASCADE`);
-        await app.ready();
     });
+
+    beforeAll(async () => {
+        await app.ready();
+    })
 
     afterAll(async () => {
         await app.close();
@@ -21,8 +24,8 @@ describe("Create Gym (e2e)", () => {
             title: "Petry Gym",
             description: "The best gym of Blumenau",
             phone: "5547996005016",
-            latitude: -26.9271018,
-            longitude: -49.1302912,
+            latitude: -26.7341808,
+            longitude: -49.0890929,
         }
 
         const response = await request(app.server)
