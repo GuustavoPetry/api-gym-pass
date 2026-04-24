@@ -20,7 +20,7 @@ export async function createGymController(request: FastifyRequest, reply: Fastif
 
     const createGymService = makeCreateGymService();
 
-    const { gym } = await createGymService.execute({
+    await createGymService.execute({
         title,
         description,
         phone,
@@ -28,9 +28,5 @@ export async function createGymController(request: FastifyRequest, reply: Fastif
         longitude
     });
 
-    return reply.status(201).send({
-        ...gym,
-        latitude: Number(gym.latitude),
-        longitude: Number(gym.longitude)
-    });
+    return reply.status(201).send();
 }
