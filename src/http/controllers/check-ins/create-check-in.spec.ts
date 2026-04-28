@@ -31,10 +31,10 @@ describe("Create Check In (e2e)", async () => {
                 longitude: -49.0890929,
             });
 
-        const { id } = gym.body.gym
+        const { id: gymId } = gym.body.gym;
 
         const response = await request(app.server)
-            .post(`/gyms/${id}/check-ins`)
+            .post(`/gyms/${gymId}/check-ins`)
             .set("Authorization", `Bearer ${token}`)
             .send({
                 latitude: -26.7341808,
@@ -44,7 +44,7 @@ describe("Create Check In (e2e)", async () => {
         expect(response.statusCode).toEqual(201);
         expect(response.body.checkIn).toEqual(
             expect.objectContaining({
-                gym_id: id
+                gym_id: gymId
             })
         );
     });

@@ -25,14 +25,14 @@ describe("Validate Check-in", async () => {
             .post("/gyms")
             .set("Authorization", `Bearer ${token}`)
             .send({
-                title: "Petry Gym",
+                title: "Programmer Gym",
                 description: "",
                 phone: "",
                 latitude: -26.7341808,
                 longitude: -49.0890929,
             });
 
-        const gymId = gymResponse.body.gym.id;
+        const { id: gymId } = gymResponse.body.gym;
 
         const checkInResponse = await request(app.server)
             .post(`/gyms/${gymId}/check-ins`)
@@ -42,7 +42,7 @@ describe("Validate Check-in", async () => {
                 longitude: -49.0890929,
             });
 
-        const checkInId = checkInResponse.body.checkIn.id;
+        const { id: checkInId } = checkInResponse.body.checkIn;
 
         const validateResponse = await request(app.server)
             .patch(`/check-ins/${checkInId}/validate`)
@@ -53,9 +53,17 @@ describe("Validate Check-in", async () => {
         expect(validateResponse.body.checkIn).toEqual(
             expect.objectContaining({
                 id: checkInId,
-                gym_id: gymId
+                gym_id: gymId,
             })
         );
+
+        const checkIn = await prisma.checkIn.findUniqueOrThrow({
+            where: {
+                id: checkInId,
+            }
+        });
+
+        expect(checkIn.validated_at).toEqual(expect.any(Date));
 
     });
 

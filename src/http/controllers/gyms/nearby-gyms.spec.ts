@@ -17,47 +17,38 @@ describe("Fetch Nearby Gyms (e2e)", () => {
         await app.close();
     });
 
-    it("should be able to fetch nearby gyms", async () => {
+    it("should be able to list nearby gyms", async () => {
         const { token } = await createAndAuthenticateUser(app);
 
-        const nearbyGyms = [
-            {
-                title: "Nearby Gym",
-                description: "",
-                phone: "",
-                latitude: -26.9257987,
-                longitude: -49.1219981
-            }
-        ];
+        const nearbyGym = {
+            title: "Nearby Gym",
+            description: "",
+            phone: "",
+            latitude: -26.9257987,
+            longitude: -49.1219981
+        };
 
-        const distantGyms = [
-            {
-                title: "Distant Gym",
-                description: "",
-                phone: "",
-                latitude: -26.7341808,
-                longitude: -49.0890929,
-            }
-        ]
+        const distantGym = {
+            title: "Distant Gym",
+            description: "",
+            phone: "",
+            latitude: -26.7341808,
+            longitude: -49.0890929,
+        };
 
-        for (const gym in nearbyGyms) {
-            await request(app.server)
-                .post("/gyms")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    ...nearbyGyms[gym]
-                })
+        await request(app.server)
+            .post("/gyms")
+            .set("Authorization", `Bearer ${token}`)
+            .send({
+                ...nearbyGym
+            })
 
-        }
-
-        for (const i in distantGyms) {
-            await request(app.server)
-                .post("/gyms")
-                .set("Authorization", `Bearer ${token}`)
-                .send({
-                    ...distantGyms[i]
-                });
-        }
+        await request(app.server)
+            .post("/gyms")
+            .set("Authorization", `Bearer ${token}`)
+            .send({
+                ...distantGym
+            });
 
         const response = await request(app.server)
             .get("/gyms/nearby")
