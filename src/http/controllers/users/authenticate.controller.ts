@@ -25,7 +25,22 @@ export async function authenticateController(request: FastifyRequest, reply: Fas
             }
         });
 
-        return reply.status(200).send({
+        const refreshToken = await reply.jwtSign({}, {
+            sign: {
+                sub: user.id,
+                expiresIn: "7d"
+            }
+        });
+
+        return reply
+            .status(200)
+            .setCookie("refreshToken", refreshToken, {
+                path: "/",
+                secure: true,
+                sameSite: true,
+                httpOnly: true,
+            })
+            .send({
             token
         });
     } catch (err) {
