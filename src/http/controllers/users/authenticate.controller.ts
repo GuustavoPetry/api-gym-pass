@@ -19,18 +19,26 @@ export async function authenticateController(request: FastifyRequest, reply: Fas
             password
         });
 
-        const token = await reply.jwtSign({}, {
-            sign: {
-                sub: user.id
-            }
-        });
+        const token = await reply.jwtSign(
+            {
+                role: user.role,
+            },
+            {
+                sign: {
+                    sub: user.id
+                }
+            });
 
-        const refreshToken = await reply.jwtSign({}, {
-            sign: {
-                sub: user.id,
-                expiresIn: "7d"
-            }
-        });
+        const refreshToken = await reply.jwtSign(
+            {
+                role: user.role,
+            },
+            {
+                sign: {
+                    sub: user.id,
+                    expiresIn: "7d"
+                }
+            });
 
         return reply
             .status(200)
@@ -41,8 +49,8 @@ export async function authenticateController(request: FastifyRequest, reply: Fas
                 httpOnly: true,
             })
             .send({
-            token
-        });
+                token
+            });
     } catch (err) {
         if (err instanceof InvalidCredentialsError) {
             return reply.status(401).send({

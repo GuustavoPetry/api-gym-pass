@@ -6,11 +6,15 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"  
 }
 
 datasource db {
   provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  MEMBER
 }
 
 model User {
@@ -18,6 +22,7 @@ model User {
   name          String
   email         String @unique
   password_hash String
+  role          Role @default(MEMBER)
   created_at    DateTime @default(now())
 
   checkIns       CheckIn[]
