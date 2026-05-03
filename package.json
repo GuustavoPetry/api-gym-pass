@@ -9,6 +9,7 @@
     "start": "node build/server.js",
     "test": "vitest run --project unit",
     "test:watch": "vitest --project unit",
+    "pretest:e2e": "prisma generate",
     "test:e2e": "prisma migrate deploy --config=./prisma.test.config.ts && vitest run --project e2e",
     "test:e2e:watch": "prisma migrate deploy --config=./prisma.test.config.ts && vitest --project e2e",
     "test:coverage": "vitest run --coverage",
