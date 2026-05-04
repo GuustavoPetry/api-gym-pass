@@ -27,3 +27,6 @@ Gympass style app.
 - [x] Os dados da aplicação precisam estar persistidos em banco PostgreSQL;
 - [x] Todas listas de dados precisam estar páginadas com 20 itens por página;
 - [x] O usuário deve ser identificado por um Json Web Token;
+
+## Schema Dinâmico com nova versão do Prisma:
+- https://efficient-sloth-d85.notion.site/Atualiza-o-Prisma-7-2-0-API-SOLID-2ee395da577080a9851ec3d0d50beb0c
